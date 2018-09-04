@@ -55,7 +55,7 @@ public class zipEarFiles
     
     public boolean zipCheck() throws IOException //Main method
     {
-        //For all Objects in PVCS Array
+        //For all Objects in Array
         for (int i = 0; i < objects.length; i++)
         {
             currentObject = objects[i];
