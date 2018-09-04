@@ -2,29 +2,29 @@ package classes;
 
 import java.io.File;
 
-public class responseDeskData 
+public class fileData 
 {
     //declare variables
-    String[] pvcsObjects;
+    String[] objects;
     String[] attachments;
     String[] attachmentTypes;
     String logType = "";
     File[] attachmentFiles;
     //Class Constructor
-    public responseDeskData(String[] pVCS, String[] attach, String lt, File[] af, String[] at)
+    public responseDeskData(String[] obj, String[] attach, String lt, File[] af, String[] at)
     {
         //equivalent values
-        pvcsObjects = pVCS;
+        objects = obj;
         attachments = attach;
         logType = lt;
         attachmentFiles = af;
         attachmentTypes = at;
     }
   
-    public String[] pvcsObjects()
+    public String[] objects()
     {
         //return this value
-        return this.pvcsObjects;
+        return this.objects;
     }
     public String[] attachments()
     {
