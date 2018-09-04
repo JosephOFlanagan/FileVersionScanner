@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-//This class checks whether the files that PVCS thinks are in the log exist in the directory. It also adds the files to their own arrays for future use.
+//This class checks whether the files that the file manager thinks are in the log exist in the directory. It also adds the files to their own arrays for future use.
 public class fileCheck 
 {
     //declare variables
@@ -20,10 +20,10 @@ public class fileCheck
     boolean clientSide;
     Writer writer;
     //Class Constructor
-    public fileCheck(responseDeskData obj, File dir, boolean cs)
+    public fileCheck(fileData obj, File dir, boolean cs)
     {
         //We are only interested in the names of the files, but still need to call the whole class to keep things consistent
-        objectNames = obj.pvcsObjects;
+        objectNames = obj.objects;
         attachmentNames = obj.attachments;
         attachmentFiles = obj.attachmentFiles;
         attachmentTypes = obj.attachmentTypes;
