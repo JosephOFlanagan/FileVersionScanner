@@ -106,11 +106,11 @@ public class testScan
         boolean zipVersionErrorsDelete = new File(directory + "/" + "zipearfileserrors.txt").delete();
         if (codingErrorsDelete || databaseDelete || flsImErrorsDelete || missingFilesDelete || releaseNoteErrorsDelete || scriptErrorsDelete || versionErrorsDelete || zipVersionErrorsDelete) 
         {
-            System.out.println("Previous Test Prep result files deleted");
+            System.out.println("Previous Test Scan result files deleted");
             //This if method is just here to ensure the files get deleted.
         }
         
-        System.out.println("Attempting to connect to Response Desk Database");
+        System.out.println("Attempting to connect to Database");
         //For the next part we need to connect to the database
         try
         {
@@ -199,7 +199,7 @@ public class testScan
                 String testScanDeployment = "";
                 
                 File [] dir_contents = directory.listFiles();
-                testScanDeployment = "SPOOL " + directory + "\\drivetsp.lst" + System.lineSeparator();
+                testScanDeployment = "SPOOL " + directory + "\\database.lst" + System.lineSeparator();
                 for (int i = 0; i < dir_contents.length; i++)
                 {
                     if ((dir_contents[i].getName().substring(dir_contents[i].getName().length() - 3)).equals("sql"))
