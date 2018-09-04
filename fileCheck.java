@@ -52,7 +52,7 @@ public class fileCheck
         }
         if (directoryExists == true)
         {
-            //For all files in responseDeskData.pvcsobjects
+            //For all files in fileData.Objects
             for (int i = 0; i < objectNames.length; i++)
             {
                 fileExists = false;
