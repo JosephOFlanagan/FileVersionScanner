@@ -34,7 +34,7 @@ public class zipEarFiles
     public zipEarFiles(fileData obj, File dir, BigDecimal[] vN)
     {
         //Objects
-        pvcsObjects = obj.objects;
+        objects = obj.objects;
 	//Directory
         directory = dir;
         versionNumbers = vN;
