@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 
 import oracle.jdbc.*;
 
-public class extractResponseDeskData 
+public class extractData 
 {
     String lNumber;
     Statement statement;
@@ -33,8 +33,8 @@ public class extractResponseDeskData
         directory = dir;
     }
   
-    //Declare variables (PVCS Objects Array, Log Type, Attachments Array, Release Notes and all other required variables)
-    String[] pvcsObjectArray;
+    //Declare variables (Objects Array, Log Type, Attachments Array, Release Notes and all other required variables)
+    String[] objectArray;
     String[] attachmentsArray;
     File[] attachmentFiles;
     List<String> allScripts;
@@ -65,11 +65,11 @@ public class extractResponseDeskData
     protected List<String> extScripts;
   
     //Create a protected instance of ResponseDeskData
-    protected responseDeskData rDData;
+    protected fileData fData;
     
     public void extractData() throws SQLException, IOException
     {
-        System.out.println("Extracting Data from Response Desk");
+        System.out.println("Extracting Data");
         //The following code identifies Faults and Change Requests  
         
         query = statement.executeQuery("select log_log_type_id from log where LOG_ID = " + lNumber);
@@ -84,7 +84,7 @@ public class extractResponseDeskData
             }
             else if (queryresult == 2)
             {
-                logType = "Change Request";
+                logType = "Change";
             }
             else
             {
@@ -99,8 +99,8 @@ public class extractResponseDeskData
         if (!releaseNotes.next())
         {
             //The release note is clearly missing, so print out such a message
-            errors = errors + "ERROR: RELEASE NOTE COMMENT is either missing, incorrectly named or in the wrong location in ResponseDesk. RELEASE NOTE COMMENT is expected for all logs." + System.lineSeparator();
-            System.out.println("ERROR: RELEASE NOTE COMMENT is either missing, incorrectly named or in the wrong location in ResponseDesk. RELEASE NOTE COMMENT is expected for all logs.");
+            errors = errors + "ERROR: RELEASE NOTE COMMENT is either missing, incorrectly named or in the wrong location. RELEASE NOTE COMMENT is expected for all logs." + System.lineSeparator();
+            System.out.println("ERROR: RELEASE NOTE COMMENT is either missing, incorrectly named or in the wrong location. RELEASE NOTE COMMENT is expected for all logs.");
             releaseNoteComment = false;
         }
         int noOfObjects = 0;
@@ -118,8 +118,8 @@ public class extractResponseDeskData
         }
         catch (SQLException e) 
         {
-            //Print out message if the files cannot be found in Response Desk
-            System.out.println("ERROR: Could not find files in Response Desk");
+            //Print out message if the files cannot be found
+            System.out.println("ERROR: Could not find files");
             attachedObjects = false;
         }
 
@@ -427,12 +427,12 @@ public class extractResponseDeskData
             }    
         }
         //Store all the values in a public instance of the Response Desk data class
-        rDData = new responseDeskData(pvcsObjectArray, attachmentsArray, logType, attachmentFiles, attachmentTypes);
+        fData = new responseDeskData(pvcsObjectArray, attachmentsArray, logType, attachmentFiles, attachmentTypes);
         //The log now needs to be checked for FLS or IM Documents depending on it's type.
         flsImCheck release = new flsImCheck(lNumber, logType, statement, directory);
         included = release.releaseChecker();
  	//Check if all files exist
-        fileCheck fCheck = new fileCheck(rDData, directory, clientSideIncluded);
+        fileCheck fCheck = new fileCheck(fData, directory, clientSideIncluded);
         System.out.println("Checking if all Files Exist");
         String filesInc = fCheck.fileChecker();
         if (!(filesInc).equals("")) 
@@ -445,7 +445,7 @@ public class extractResponseDeskData
             fileCheck = true;   
         }
         //The file checker above will populate the attachmentFiles array, so they need to be put back in line with each other.
-        rDData.attachmentFiles = fCheck.attachmentFiles;
+        fData.attachmentFiles = fCheck.attachmentFiles;
 
         //If Scripts are attadched we need to assign them to a Script Array Class
         if (scriptsAttached == true)
