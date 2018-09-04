@@ -431,7 +431,7 @@ public class extractData
         //The log now needs to be checked for FLS or IM Documents depending on it's type.
         flsImCheck release = new flsImCheck(lNumber, logType, statement, directory);
         included = release.releaseChecker();
- 	//Check if all files exist
+     	//Check if all files exist
         fileCheck fCheck = new fileCheck(fData, directory, clientSideIncluded);
         System.out.println("Checking if all Files Exist");
         String filesInc = fCheck.fileChecker();
