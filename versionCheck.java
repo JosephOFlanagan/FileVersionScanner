@@ -20,8 +20,8 @@ public class versionCheck
 {
     //FMXPLLText
     fmbxmlPld fpt;
-    //PVCS Object Array
-    String[] pvcsObjects;
+    //Object Array
+    String[] objects;
     String logNumber;
     BigDecimal[] versionNumbers;
     String logType;
@@ -31,7 +31,7 @@ public class versionCheck
     String[] pldStrings;
     File[] fmbxmlFiles;
     File[] pldFiles;
-    responseDeskData response;
+    fileData files;
     boolean clientSide;
     boolean fmbInc;
     boolean pllInc;
@@ -41,12 +41,12 @@ public class versionCheck
     String errors = "";
   
     //Class Constructor
-    public versionCheck(fmbxmlPld fp, extractResponseDeskData ext, String logNo, File dir)
+    public versionCheck(fmbxmlPld fp, extractData ext, String logNo, File dir)
     {
         //FMXPLLText
         fpt = fp;
-  	//PVCS Object Array
-        pvcsObjects = ext.rDData.pvcsObjects();
+  	    //Object Array
+        objects = ext.fData.Objects();
         //Log Number
         logNumber = logNo;
         //Version Number
@@ -169,11 +169,11 @@ public class versionCheck
                     {
                         //Declare a variable that will be used to store the version number (you'll see why in a moment).
                         BigDecimal versionFmbXml = null;
-                        //Go through all the pvcsObjects in order to align the correct version number
-                        for (int j = 0; j < pvcsObjects.length; j++) 
+                        //Go through all the objects in order to align the correct version number
+                        for (int j = 0; j < objects.length; j++) 
                         {
                             //If we find a matching xml and fmb
-                            if ((fmbxmlFiles[i].getName()).equals(pvcsObjects[j].substring(0,pvcsObjects[j].length() - 4) + "_fmb.xml")) 
+                            if ((fmbxmlFiles[i].getName()).equals(objects[j].substring(0,objects[j].length() - 4) + "_fmb.xml")) 
                             {
                                 versionFmbXml = versionNumbers[j];
                             }
@@ -246,7 +246,7 @@ public class versionCheck
                         //If there is not a match 
                         if (revisionFound == false)
                         {                        
-                            //ERROR: ‘Filename’: Version numbering incorrect. Expecting version number ‘Revision’ as comment and also as a revision variable
+                            //ERROR: Â‘FilenameÂ’: Version numbering incorrect. Expecting version number Â‘RevisionÂ’ as comment and also as a revision variable
                             testPrepPassed = false;
                             errors = "ERROR: " + fileName.substring(0,(fileName.length() - 8)) + ".fmb" +   ": Version numbering incorrect. Expecting version number " + versionFmbXml.toString() + " as comment and also as a revision variable" + System.lineSeparator();
                             System.out.println("ERROR: " + fileName.substring(0,(fileName.length() - 8)) + ".fmb" +   ": Version numbering incorrect. Expecting version number " + versionFmbXml.toString() + " as comment and also as a revision variable");
@@ -254,7 +254,7 @@ public class versionCheck
                         //Check if the log number was found
                         if (logNumberFound == false)
                         {
-                            //ERROR: ‘Filename’: Version numbering incorrect. Expecting version number ‘Revision’ as comment and also as a revision variable
+                            //ERROR: Â‘FilenameÂ’: Version numbering incorrect. Expecting version number Â‘RevisionÂ’ as comment and also as a revision variable
                             testPrepPassed = false;
                             errors = errors + "ERROR: " + fileName.substring(0,(fileName.length() - 8)) + ".fmb" + ": Log number incorrect. Expecting log number " + logNumber + " as comment" + System.lineSeparator();
                             System.out.println("ERROR: " + fileName.substring(0,(fileName.length() - 8)) + ".fmb" + ": Log number incorrect. Expecting log number " + logNumber + " as comment");
@@ -281,11 +281,11 @@ public class versionCheck
                     {
                         //Declare a variable that will be used to store the version number (you'll see why in a moment).
                         BigDecimal versionPld = null;
-                        //Go through all the pvcsObjects in order to align the correct version number
-                        for (int j = 0; j < pvcsObjects.length; j++) 
+                        //Go through all the objects in order to align the correct version number
+                        for (int j = 0; j < objects.length; j++) 
                         {
                             //If we find a matching pld and pll
-                            if ((pldFiles[i].getName().substring(0,pldFiles[i].getName().length() - 3) + "pll").equals(pvcsObjects[j])) 
+                            if ((pldFiles[i].getName().substring(0,pldFiles[i].getName().length() - 3) + "pll").equals(objects[j])) 
                             {
                                 versionPld = versionNumbers[j];
                             }
@@ -302,7 +302,7 @@ public class versionCheck
                         while ((line = bReader.readLine()) != null)
                         {
                             lineCount++;
-                            //Check file for: “($revision.*$RDlog)” and also “(revision.*$revision)”
+                            //Check file for: Â“($revision.*$RDlog)Â” and also Â“(revision.*$revision)Â”
                             int logNoCheck = line.indexOf(logNumber);
                             int revisionCheck = line.indexOf(versionPld.toString());
                             int commentCheck = - 1;
@@ -342,9 +342,9 @@ public class versionCheck
                         if (revisionFound == false)
                         {
                             testPrepPassed = false;
-                            //ERROR: $Filename: Version numbering incorrect. Expecting ‘Revision’ followed by the version number
-                            errors = errors + "ERROR: " + pldFiles[i].getName().substring(0,(pldFiles[i].getName().length() - 3)) + "pll" + " Version numbering incorrect. Expecting ‘Revision’ followed by the version number." + System.lineSeparator();
-                            System.out.println("ERROR: " + pldFiles[i].getName().substring(0,(pldFiles[i].getName().length() - 3)) + "pll" + " Version numbering incorrect. Expecting ‘Revision’ followed by the version number.");
+                            //ERROR: $Filename: Version numbering incorrect. Expecting Â‘RevisionÂ’ followed by the version number
+                            errors = errors + "ERROR: " + pldFiles[i].getName().substring(0,(pldFiles[i].getName().length() - 3)) + "pll" + " Version numbering incorrect. Expecting Â‘RevisionÂ’ followed by the version number." + System.lineSeparator();
+                            System.out.println("ERROR: " + pldFiles[i].getName().substring(0,(pldFiles[i].getName().length() - 3)) + "pll" + " Version numbering incorrect. Expecting Â‘RevisionÂ’ followed by the version number.");
                         }
                         if (logNoFound == false) 
                         {
@@ -366,30 +366,30 @@ public class versionCheck
         }
         //The following code deals with all other objects. We will need to list the entire directory contents
         File[] dir_contents = directory.listFiles();
-        //List an array of files based on Response Desk data
-        files = new File[pvcsObjects.length];
+        //List an array of files based on data
+        files = new File[objects.length];
         //Test to see if Database Objects are included
         boolean databaseObjectsIncluded = false;
         
         for (int i = 0; i < dir_contents.length; i++)
         {
-            for (int j = 0; j < pvcsObjects.length; j++)
+            for (int j = 0; j < objects.length; j++)
             {
                 //Need to filter file types, not all of these should be going through this method
-                if (!("sql").equals (pvcsObjects[j].substring(pvcsObjects[j].length() - 3)))
+                if (!("sql").equals (objects[j].substring(objects[j].length() - 3)))
                 {
-                    if (!("fmb").equals (pvcsObjects[j].substring(pvcsObjects[j].length() - 3)))
+                    if (!("fmb").equals (objects[j].substring(objects[j].length() - 3)))
                     {
-                        if (!("xml").equals (pvcsObjects[j].substring(pvcsObjects[j].length() - 3)))
+                        if (!("xml").equals (objects[j].substring(objects[j].length() - 3)))
                         {
-                            if (!("pll").equals (pvcsObjects[j].substring(pvcsObjects[j].length() - 3)))
+                            if (!("pll").equals (objects[j].substring(objects[j].length() - 3)))
                             { 
-                                if (!("zip").equals (pvcsObjects[j].substring(pvcsObjects[j].length() - 3)))
+                                if (!("zip").equals (objects[j].substring(objects[j].length() - 3)))
                                 {
-                                    if (!("ear").equals (pvcsObjects[j].substring(pvcsObjects[j].length() - 3)))
+                                    if (!("ear").equals (objects[j].substring(objects[j].length() - 3)))
                                     { 
-                                        //If there's a match between Response Desk and Directory
-                                        if ((pvcsObjects[j].equals (dir_contents[i].getName())))
+                                        //If there's a match between database and Directory
+                                        if ((objects[j].equals (dir_contents[i].getName())))
                                         {
                                             //We can safely assign the two vin line with each other.
                                             files[j] = dir_contents[i];
@@ -407,15 +407,15 @@ public class versionCheck
         //For every other type of file (except scripts)
         if (databaseObjectsIncluded == true)
         {
-            for (int i = 0; i < pvcsObjects.length; i++)
+            for (int i = 0; i < objects.length; i++)
             {
                 //For SPL files we need to make sure the matching PLD is also in the directory.
                 boolean pldFound = false;
-                if (("spl").equals (pvcsObjects[i].substring(pvcsObjects[i].length() - 3)))
+                if (("spl").equals (objects[i].substring(objects[i].length() - 3)))
                 {
                     for (int j = 0; j < dir_contents.length; j++)
                     {
-                        if ((dir_contents[j].getName()).equals(pvcsObjects[i].substring(0, pvcsObjects[i].length() - 3) + "pld")) 
+                        if ((dir_contents[j].getName()).equals(objects[i].substring(0, objects[i].length() - 3) + "pld")) 
                         {
                             //Matching PLD has been found
                             pldFound = true;
@@ -439,15 +439,14 @@ public class versionCheck
             {
                 if (files[i] != null)
                 {
-                    //Initialise a variable to hold version numbers so that the object can be aligned correctly with Response Desk
+                    //Initialise a variable to hold version numbers so that the object can be aligned correctly with database
                     BigDecimal versionDat = null;
-                    for (int j = 0; j < pvcsObjects.length; j++) 
+                    for (int j = 0; j < objects.length; j++) 
                     {
-                        if ((files[i].getName()).equals(pvcsObjects[j])) 
+                        if ((files[i].getName()).equals(objects[j])) 
                         {
                             versionDat = versionNumbers[j];
                         }
-
                     }
                     String fileName = files[i].getName();
                     //The following lines of code will read the file for errors
@@ -457,7 +456,7 @@ public class versionCheck
                     boolean lineFound = false;
                     boolean versionFound = false;
                     boolean logNoFound = false;
-                    //Check file for following expression: #($revision.*$RDlog)”
+                    //Check file for following expression: #($revision.*$RDlog)Â”
                     while ((line = bReader.readLine()) != null)
                     {
                         //Initialise while loop only variables
