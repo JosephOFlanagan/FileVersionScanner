@@ -74,7 +74,7 @@ public class zipEarFiles
                         if (("zip").equals(contents[j].getName().substring(contents[j].getName().length() - 3)))
                         {
                             currentZipFile =  new ZipFile(contents[j]);
-                            String searchFileName = currentObject.substring(0,pvcsObjects[i].length() - 4);
+                            String searchFileName = currentObject.substring(0,objects[i].length() - 4);
                             //If Object equals currentObject
                             Enumeration e = currentZipFile.entries();
                             while (e.hasMoreElements())
@@ -95,7 +95,7 @@ public class zipEarFiles
                     }
                 }
                 //If Object equals adrive_cre
-                if ((currentObject.substring(0,pvcsObjects[i].length() - 4)).equals ("**java program name"))
+                if ((currentObject.substring(0,objects[i].length() - 4)).equals ("**java program name"))
                 {
                     File[] dir_contents = filePath.listFiles();
                     for (int j = 0; j < dir_contents.length; j++)
@@ -173,7 +173,7 @@ public class zipEarFiles
                     if (versionFileFound == false)
                     {
                         //Object = currentObject
-                        pvcsObjects[i] = currentObject;
+                        objects[i] = currentObject;
                         //refine file path in case of mulitple ear files
                         file = directory.listFiles();
                         for (int j = 0; j < file.length; j++)
@@ -220,7 +220,7 @@ public class zipEarFiles
                         }
                         else 
                         {
-                            //Some eaer files don't have version numbers, error if this is the case
+                            //Some ear files don't have version numbers, error if this is the case
                             errors = errors + "Version number file not found. Either the version number is not stored in this file of the program could not find the version number file" + System.lineSeparator();
                             System.out.println("Version number file not found. Either the version number is not stored in this file of the program could not find the version number file");
                         }
