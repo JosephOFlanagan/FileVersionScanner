@@ -30,7 +30,7 @@ public class fmbPllConvert
     {
         fmbxmlArray = new ArrayList<String>();
         pldArray = new ArrayList<String>();
-        //For All Objects in PVCS Array
+        //For All Objects in Array
         for (int i=0; i < objects.length; i++)
         {
             //If File type is an FMB
