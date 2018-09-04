@@ -22,8 +22,8 @@ import java.util.zip.ZipFile;
 
 public class zipEarFiles 
 {
-    //PVCS Objects
-    String[] pvcsObjects;
+    //Objects
+    String[] objects;
     //Directory
     File directory;
     Writer writer;
@@ -31,16 +31,16 @@ public class zipEarFiles
     BigDecimal[] versionNumbers;
     private static final int BUFFER_SIZE = 4096;
 
-    public zipEarFiles(responseDeskData obj, File dir, BigDecimal[] vN)
+    public zipEarFiles(fileData obj, File dir, BigDecimal[] vN)
     {
-        //PVCS Objects
-        pvcsObjects = obj.pvcsObjects;
+        //Objects
+        pvcsObjects = obj.objects;
 	//Directory
         directory = dir;
         versionNumbers = vN;
     }
     boolean extracted = false;
-    boolean testPrepPassed = true;
+    boolean testScanPassed = true;
     //CurrentObject variable
     String currentObject;
     //filePath variable
@@ -56,17 +56,17 @@ public class zipEarFiles
     public boolean zipCheck() throws IOException //Main method
     {
         //For all Objects in PVCS Array
-        for (int i = 0; i < pvcsObjects.length; i++)
+        for (int i = 0; i < objects.length; i++)
         {
-            currentObject = pvcsObjects[i];
+            currentObject = objects[i];
             filePath = directory;
             //If Object is .ZIP type
             if (("zip").equals(currentObject.substring((currentObject.length() - 3))))
             {
-                //If Object contains “arval” or “resacar”
-                if (currentObject.indexOf("arval") > - 1)
+                //If Object contains **text
+                if (currentObject.indexOf("company name") > - 1)
                 {
-                    //For all Objects in PVCS Array
+                    //For all Objects in Array
                     File [] contents = filePath.listFiles();
                     for (int j = 0; j < contents.length; j++)
                     {
@@ -95,7 +95,7 @@ public class zipEarFiles
                     }
                 }
                 //If Object equals adrive_cre
-                if ((currentObject.substring(0,pvcsObjects[i].length() - 4)).equals ("adrive_cre"))
+                if ((currentObject.substring(0,pvcsObjects[i].length() - 4)).equals ("**java program name"))
                 {
                     File[] dir_contents = filePath.listFiles();
                     for (int j = 0; j < dir_contents.length; j++)
@@ -122,8 +122,8 @@ public class zipEarFiles
                             if (extracted == false) 
                             {
                                 //We need to extract the jar file, so this needs to be set up
-                                InputStream adrive = new FileInputStream (directory + "/adrive_cre.jar");
-                                OutputStream adrive_creExtract = new FileOutputStream(directory + "/adrive_cre.zip");
+                                InputStream adrive = new FileInputStream (directory + "/**java program name.jar");
+                                OutputStream adrive_creExtract = new FileOutputStream(directory + "/**java program name.zip");
                                 //Call extractFile to extract the jar
                                 extractFile(adrive, adrive_creExtract, directory);
                                 systemVersion = dir_contents[j];
@@ -131,7 +131,7 @@ public class zipEarFiles
                         }
                     }
                     //With the file extracted, it should now appear in the primary directory, we can now check the version number, but just in case the check didn't work the first time we need to do it again
-                    if (systemFileStream != null || systemVersion.getName() == "adrive_cre.jar")
+                    if (systemFileStream != null || systemVersion.getName() == "**java program name.jar")
                     {
                         File extractedFile = new File(directory + "/SystemVersion.class");
                         newFileLocation = new FileOutputStream(extractedFile);
@@ -140,15 +140,15 @@ public class zipEarFiles
                         boolean versionFound = versionSearch(extractedFile, versionNumbers[i]);
                         if (versionFound == false) 
                         {
-                            //ERROR: $Filename: Version numbering incorrect. Expecting ‘mSystemVersion’ followed by the version number.
-                            errors = errors + "ERROR: " + currentObject + " Version numbering incorrect. Expecting ‘mSystemVersion’ followed by the version number." + System.lineSeparator();
-                            System.out.println("ERROR: " + currentObject + " Version numbering incorrect. Expecting ‘mSystemVersion’ followed by the version number.");
+                            //ERROR: $Filename: Version numbering incorrect. Expecting â€˜mSystemVersionâ€™ followed by the version number.
+                            errors = errors + "ERROR: " + currentObject + " Version numbering incorrect. Expecting â€˜mSystemVersionâ€™ followed by the version number." + System.lineSeparator();
+                            System.out.println("ERROR: " + currentObject + " Version numbering incorrect. Expecting â€˜mSystemVersionâ€™ followed by the version number.");
                             testPrepPassed = false;
                         }
                     }
                 }
                 //resacar is another special case as we need to check that this hasn't been compressed at the wrong level
-                else if (currentObject.indexOf("resacar") > - 1) 
+                else if (currentObject.indexOf("***text") > - 1) 
                 {
                     //Search for a jar file of the same name
                     if (("jar").equals(currentObject.substring((currentObject.length() - 3))))
@@ -158,9 +158,9 @@ public class zipEarFiles
                         boolean versionFound = versionSearch(jarFile, versionNumbers[i]);
                         if (versionFound == false)
                         {
-                            //If the version number doesn’t match
+                            //If the version number doesnâ€™t match
                     
-                            //ERROR: $Filename: Version numbering incorrect. Expecting ‘mSystemVersion’ followed by the version number.
+                            //ERROR: $Filename: Version numbering incorrect. Expecting â€˜mSystemVersionâ€™ followed by the version number.
                             errors = errors + "ERROR: " + currentObject + "Version numbering incorrect. Expecting "+ versionNumbers[i] + "followed by the version number." + System.lineSeparator();
                             System.out.println("ERROR: " + currentObject + "Version numbering incorrect. Expecting "+ versionNumbers[i] + "followed by the version number.");
                             testPrepPassed = false;
@@ -210,9 +210,9 @@ public class zipEarFiles
                             boolean versionFound = versionSearch(extractedFile, versionNumbers[i]);
                             if (versionFound == false) 
                             {
-                                //If the version number doesn’t match
+                                //If the version number doesnâ€™t match
                             
-                                //ERROR: $Filename: Version numbering incorrect. Expecting ‘mSystemVersion’ followed by the version number.
+                                //ERROR: $Filename: Version numbering incorrect. Expecting â€˜mSystemVersionâ€™ followed by the version number.
                                 errors = errors + "ERROR: " + currentObject + " Version numbering incorrect. Expecting mSystemVersion followed by the version number " + versionNumbers[i] + System.lineSeparator();
                                 System.out.println("ERROR: " + currentObject + " Version numbering incorrect. Expecting mSystemVersion followed by the version number " + versionNumbers[i] + ".");
                                 testPrepPassed = false;
