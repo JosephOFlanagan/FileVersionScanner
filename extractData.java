@@ -25,7 +25,7 @@ public class extractData
     File directory;
   
     //Class Constructor
-    public extractResponseDeskData(String lNum, Statement state, File dir)
+    public extractData(String lNum, Statement state, File dir)
     {
         //Read Log number here
         lNumber = lNum;
@@ -426,7 +426,7 @@ public class extractData
                 }
             }    
         }
-        //Store all the values in a public instance of the Response Desk data class
+        //Store all the values in a public instance of the File data class
         fData = new responseDeskData(pvcsObjectArray, attachmentsArray, logType, attachmentFiles, attachmentTypes);
         //The log now needs to be checked for FLS or IM Documents depending on it's type.
         flsImCheck release = new flsImCheck(lNumber, logType, statement, directory);
