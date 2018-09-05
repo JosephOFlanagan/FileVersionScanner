@@ -94,7 +94,7 @@ public class fmbPllConvert
                     //Run frmcmp to convert the file into a pld
                     File currentFile = new File(directory + "/" + objects[i].substring(0,(objects[i].length() - 3)) + "pld");
                     System.out.println("Converting " + objects[i] + " into a pld file");
-                    Process plxpr = plx.exec("frmcmp userid=drivedev/drivedev@drg1dev module=" + objects[i] + " module_type=LIBRARY window_state=minimize script=YES", null, directory);
+                    Process plxpr = plx.exec("frmcmp userid=username/password@database module=" + objects[i] + " module_type=LIBRARY window_state=minimize script=YES", null, directory);
                     //frmcmp runs independently to the runtime of testPrep, so we need to force the program to wait until the pld has been created, otherwise the array will store null.
                     plxpr.waitFor();
                     //Need to look in the directory for the file
